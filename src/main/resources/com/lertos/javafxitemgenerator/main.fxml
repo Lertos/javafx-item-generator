@@ -123,8 +123,8 @@
                         <HBox alignment="CENTER" fillHeight="false" spacing="20.0">
                            <children>
                               <Button fx:id="btnSave" mnemonicParsing="false" onAction="#onSaveButtonClick" text="Save" />
-                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Clear" />
-                              <Button layoutX="62.0" layoutY="10.0" mnemonicParsing="false" text="Delete" />
+                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#onClearButtonClick" text="Clear" />
+                              <Button layoutX="62.0" layoutY="10.0" mnemonicParsing="false" onAction="#onDeleteButtonClick" text="Delete" />
                            </children>
                            <padding>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />

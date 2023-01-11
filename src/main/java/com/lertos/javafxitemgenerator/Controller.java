@@ -20,6 +20,10 @@ public class Controller {
     private ChoiceBox cbEquipmentSlots;
     @FXML
     private Button btnSave;
+    @FXML
+    private Button btnClear;
+    @FXML
+    private Button btnDelete;
 
     public void loadSetupData() {
         SetupData setupData = new SetupData();
@@ -39,6 +43,16 @@ public class Controller {
 
     @FXML
     protected void onSaveButtonClick() {
-        System.out.println("Test");
+        System.out.println("Test Save");
+    }
+
+    @FXML
+    protected void onClearButtonClick() {
+        System.out.println("Test Clear");
+    }
+
+    @FXML
+    protected void onDeleteButtonClick() {
+        System.out.println("Test Delete");
     }
 }
