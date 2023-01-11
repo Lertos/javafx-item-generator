@@ -1,6 +1,8 @@
 package com.lertos.javafxitemgenerator;
 
+import com.lertos.javafxitemgenerator.model.Datasource;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -22,6 +24,21 @@ public class Main extends Application {
         stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
+    }
+
+    @Override
+    public void init() throws Exception {
+        super.init();
+        if(!Datasource.getInstance().open()) {
+            System.out.println("FATAL ERROR: Couldn't connect to database");
+            Platform.exit();
+        }
+    }
+
+    @Override
+    public void stop() throws Exception {
+        super.stop();
+        Datasource.getInstance().close();
     }
 
     public static void main(String[] args) {
