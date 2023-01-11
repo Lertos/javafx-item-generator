@@ -29,6 +29,12 @@ public class Controller {
         cbWeaponClasses.getItems().addAll(setupData.getClasses());
         cbArmorClasses.getItems().addAll(setupData.getClasses());
         cbEquipmentSlots.getItems().addAll(setupData.getEquipmentSlots());
+
+        cbItemTypes.getSelectionModel().select(0);
+        cbRarities.getSelectionModel().select(0);
+        cbWeaponClasses.getSelectionModel().select(0);
+        cbArmorClasses.getSelectionModel().select(0);
+        cbEquipmentSlots.getSelectionModel().select(0);
     }
 
     @FXML
