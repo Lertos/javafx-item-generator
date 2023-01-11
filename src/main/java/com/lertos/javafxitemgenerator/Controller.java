@@ -1,14 +1,15 @@
 package com.lertos.javafxitemgenerator;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
 public class Controller {
     @FXML
-    private Label welcomeText;
+    private Button btnSave;
 
     @FXML
-    protected void onHelloButtonClick() {
-        welcomeText.setText("Welcome to JavaFX Application!");
+    protected void onSaveButtonClick() {
+        System.out.println("Test");
     }
 }
