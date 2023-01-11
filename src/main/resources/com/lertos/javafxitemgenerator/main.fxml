@@ -38,8 +38,8 @@
                                  <children>
                                     <TextField prefHeight="17.0" />
                                     <TextField layoutX="10.0" layoutY="18.0" prefHeight="17.0" />
-                                    <ChoiceBox prefWidth="280.0" />
-                                    <ChoiceBox layoutX="10.0" layoutY="68.0" prefWidth="280.0" />
+                                    <ChoiceBox fx:id="cbItemTypes" prefWidth="280.0" />
+                                    <ChoiceBox fx:id="cbRarities" layoutX="10.0" layoutY="68.0" prefWidth="280.0" />
                                     <TextField layoutX="10.0" layoutY="93.0" prefHeight="17.0" />
                                     <TextField layoutX="10.0" layoutY="118.0" prefHeight="17.0" />
                                     <TextField layoutX="10.0" layoutY="143.0" prefHeight="17.0" />
@@ -66,8 +66,8 @@
                                                 </VBox>
                                                 <VBox alignment="BASELINE_LEFT" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <ChoiceBox prefWidth="280.0" />
-                                                      <ChoiceBox layoutX="10.0" layoutY="18.0" prefWidth="280.0" />
+                                                      <ChoiceBox fx:id="cbWeaponClasses" prefWidth="280.0" />
+                                                      <TextField layoutX="10.0" layoutY="68.0" />
                                                       <CheckBox alignment="TOP_LEFT" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" prefHeight="25.0" selected="true" />
                                                       <TextField layoutX="10.0" layoutY="68.0" />
                                                       <TextField layoutX="10.0" layoutY="93.0" />
@@ -99,9 +99,9 @@
                                                 </VBox>
                                                 <VBox alignment="BASELINE_LEFT" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <ChoiceBox prefWidth="280.0" />
-                                                      <ChoiceBox layoutX="10.0" layoutY="18.0" prefWidth="280.0" />
-                                                      <ChoiceBox layoutX="10.0" layoutY="43.0" prefWidth="280.0" />
+                                                      <ChoiceBox fx:id="cbArmorClasses" prefWidth="280.0" />
+                                                      <TextField layoutX="10.0" layoutY="68.0" />
+                                                      <ChoiceBox fx:id="cbEquipmentSlots" layoutX="10.0" layoutY="43.0" prefWidth="280.0" />
                                                       <TextField layoutX="10.0" layoutY="68.0" />
                                                       <TextField layoutX="10.0" layoutY="93.0" />
                                                    </children>

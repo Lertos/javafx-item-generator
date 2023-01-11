@@ -13,6 +13,11 @@ public class Main extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("main.fxml"));
 
         Scene scene = new Scene(fxmlLoader.load());
+
+        Controller controller = fxmlLoader.getController();
+
+        controller.loadSetupData();
+
         stage.setTitle("Item Generator");
         stage.setResizable(false);
         stage.setScene(scene);
