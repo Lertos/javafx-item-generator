@@ -10,7 +10,9 @@ public class Datasource {
     private final File temp = new File(DB_NAME);
     private final String CONNECTION_STRING = "jdbc:sqlite:" + temp.getAbsolutePath().replace("\\","\\\\");
 
-    private final String CREATE_ITEMS_TABLE = "CREATE TABLE IF NOT EXISTS items (" +
+    public static final String TABLE_ITEMS = "items";
+
+    private final String CREATE_ITEMS_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_ITEMS + " (" +
             "id INT PRIMARY KEY," +
             "name TEXT NOT NULL," +
             "rarity TEXT NOT NULL," +
@@ -47,7 +49,7 @@ public class Datasource {
 
 
     public static final String QUERY_ITEM_INFO =
-            " SELECT " + COLUMN_ITEM_ID + ", " + COLUMN_ITEM_ID + ", " + COLUMN_ITEM_ID + ", " +
+            " SELECT " + COLUMN_ITEM_ID + ", " + COLUMN_ITEM_NAME + ", " + COLUMN_ITEM_TYPE + ", " + COLUMN_ITEM_RARITY +
             " FROM " + TABLE_ITEMS;
 
     private Connection conn;
