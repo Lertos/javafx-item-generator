@@ -39,9 +39,7 @@ public class Item {
         this.health = new SimpleIntegerProperty();
     }
 
-    public int getId() {
-        return id.get();
-    }
+    public int getId() { return id.get(); }
 
     public void setId(int id) {
         this.id.set(id);
@@ -59,9 +57,7 @@ public class Item {
         return rarity.get();
     }
 
-    public void setRarity(String rarity) {
-        this.rarity.set(rarity);
-    }
+    public void setRarity(String rarity) { this.rarity.set(rarity); }
 
     public String getType() {
         return type.get();
@@ -75,9 +71,7 @@ public class Item {
         return buyPrice.get();
     }
 
-    public void setBuyPrice(int buyPrice) {
-        this.buyPrice.set(buyPrice);
-    }
+    public void setBuyPrice(int buyPrice) { this.buyPrice.set(buyPrice); }
 
     public int getSellPrice() {
         return sellPrice.get();
