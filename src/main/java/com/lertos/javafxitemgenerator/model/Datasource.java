@@ -25,10 +25,9 @@ public class Datasource {
             "dmg_min INT NULL," +
             "dmg_max INT NULL," +
             "armor INT NULL," +
-            "health INT NULL" +
+            "health INT NULL," +
+            "CONSTRAINT constraint_unique_item UNIQUE (name, rarity, type)" +
             ");";
-
-    public static final String TABLE_ITEMS = "items";
 
     public static final String COLUMN_ITEM_ID = "id";
     public static final String COLUMN_ITEM_NAME = "name";
