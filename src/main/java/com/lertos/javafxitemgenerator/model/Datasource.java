@@ -10,8 +10,27 @@ public class Datasource {
     private final File temp = new File(DB_NAME);
     private final String CONNECTION_STRING = "jdbc:sqlite:" + temp.getAbsolutePath().replace("\\","\\\\");
 
-    public static final String TABLE_ITEMS = "items";
+    private final String TABLE_ITEMS = "items";
 
+    private final String COLUMN_ITEM_ID = "id";
+    private final String COLUMN_ITEM_NAME = "name";
+    private final String COLUMN_ITEM_RARITY = "rarity";
+    private final String COLUMN_ITEM_TYPE = "type";
+    private final String COLUMN_ITEM_BUY_PRICE = "buy_price";
+    private final String COLUMN_ITEM_SELL_PRICE = "sell_price";
+    private final String COLUMN_ITEM_DESCRIPTION = "description";
+    private final String COLUMN_ITEM_CLASS_REQ = "class_req";
+    private final String COLUMN_ITEM_LEVEL_REQ = "level_req";
+    private final String COLUMN_ITEM_ONE_HANDED = "one_handed";
+    private final String COLUMN_ITEM_EQUIP_SLOT = "equip_slot";
+    private final String COLUMN_ITEM_DMG_MIN = "dmg_min";
+    private final String COLUMN_ITEM_DMG_MAX = "dmg_max";
+    private final String COLUMN_ITEM_ARMOR = "armor";
+    private final String COLUMN_ITEM_HEALTH = "health";
+
+    //-------------------------
+    // QUERIES
+    //-------------------------
     private final String CREATE_ITEMS_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_ITEMS + " (" +
             "id INT PRIMARY KEY," +
             "name TEXT NOT NULL," +
@@ -31,24 +50,7 @@ public class Datasource {
             "CONSTRAINT constraint_unique_item UNIQUE (name, rarity, type)" +
             ");";
 
-    public static final String COLUMN_ITEM_ID = "id";
-    public static final String COLUMN_ITEM_NAME = "name";
-    public static final String COLUMN_ITEM_RARITY = "rarity";
-    public static final String COLUMN_ITEM_TYPE = "type";
-    public static final String COLUMN_ITEM_BUY_PRICE = "buy_price";
-    public static final String COLUMN_ITEM_SELL_PRICE = "sell_price";
-    public static final String COLUMN_ITEM_DESCRIPTION = "description";
-    public static final String COLUMN_ITEM_CLASS_REQ = "class_req";
-    public static final String COLUMN_ITEM_LEVEL_REQ = "level_req";
-    public static final String COLUMN_ITEM_ONE_HANDED = "one_handed";
-    public static final String COLUMN_ITEM_EQUIP_SLOT = "equip_slot";
-    public static final String COLUMN_ITEM_DMG_MIN = "dmg_min";
-    public static final String COLUMN_ITEM_DMG_MAX = "dmg_max";
-    public static final String COLUMN_ITEM_ARMOR = "armor";
-    public static final String COLUMN_ITEM_HEALTH = "health";
-
-
-    public static final String QUERY_ITEM_INFO =
+    private final String QUERY_ITEM_INFO =
             " SELECT " + COLUMN_ITEM_ID + ", " + COLUMN_ITEM_NAME + ", " + COLUMN_ITEM_TYPE + ", " + COLUMN_ITEM_RARITY +
             " FROM " + TABLE_ITEMS;
 
