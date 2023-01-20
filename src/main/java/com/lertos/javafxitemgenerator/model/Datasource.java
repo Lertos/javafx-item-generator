@@ -200,25 +200,23 @@ public class Datasource {
             if (affectedRows == 1) {
                 conn.commit();
             } else {
-                throw new SQLException("The song insert failed");
+                throw new SQLException("The item insert failed");
             }
 
         } catch(Exception e) {
-            System.out.println("Insert song exception: " + e.getMessage());
+            System.out.println("Insert item exception: " + e.getMessage());
             try {
                 System.out.println("Performing rollback");
                 conn.rollback();
             } catch(SQLException e2) {
-                System.out.println("Oh boy! Things are really bad! " + e2.getMessage());
+                System.out.println("Rollback failed: " + e2.getMessage());
             }
         } finally {
             try {
-                System.out.println("Resetting default commit behavior");
                 conn.setAutoCommit(true);
             } catch(SQLException e) {
-                System.out.println("Couldn't reset auto-commit! " + e.getMessage());
+                System.out.println("Resetting auto-commit failed: " + e.getMessage());
             }
-
         }
     }
 }
