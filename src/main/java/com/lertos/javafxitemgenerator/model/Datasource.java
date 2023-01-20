@@ -32,7 +32,7 @@ public class Datasource {
     // QUERIES
     //-------------------------
     private final String CREATE_ITEMS_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_ITEMS + " (" +
-            "id INT PRIMARY KEY," +
+            "id INTEGER PRIMARY KEY AUTOINCREMENT," +
             "name TEXT NOT NULL," +
             "rarity TEXT NOT NULL," +
             "type TEXT NOT NULL," +
@@ -99,6 +99,8 @@ public class Datasource {
             deleteAllItems();
 
             //DEBUG: Testing item creation
+            insertNewItem("Item 1", "common", "weapon", 12, 4, "A big item.", "", -1, -1, "", -1, -1, -1, -1);
+            insertNewItem("Item 2", "rare", "armor", 12, 4, "A big item.", "", -1, -1, "", -1, -1, -1, -1);
             insertNewItem("Item 1", "common", "weapon", 12, 4, "A big item.", "", -1, -1, "", -1, -1, -1, -1);
 
             return true;
