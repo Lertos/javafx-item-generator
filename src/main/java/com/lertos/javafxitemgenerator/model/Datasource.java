@@ -124,7 +124,7 @@ public class Datasource {
 
     private void createTables() {
         try (Statement statement = conn.createStatement()) {
-            statement.executeQuery(CREATE_ITEMS_TABLE);
+            statement.execute(CREATE_ITEMS_TABLE);
         } catch (SQLException e) {
             System.out.println("Query failed: " + e.getMessage());
         }
@@ -132,7 +132,7 @@ public class Datasource {
 
     private void deleteAllItems() {
         try (Statement statement = conn.createStatement()) {
-            statement.executeQuery(DELETE_ALL_ITEMS);
+            statement.execute(DELETE_ALL_ITEMS);
         } catch (SQLException e) {
             System.out.println("Query failed: " + e.getMessage());
         }
