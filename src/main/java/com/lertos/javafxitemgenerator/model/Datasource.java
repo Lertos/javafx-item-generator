@@ -54,6 +54,9 @@ public class Datasource {
             " SELECT " + COLUMN_ITEM_ID + ", " + COLUMN_ITEM_NAME + ", " + COLUMN_ITEM_TYPE + ", " + COLUMN_ITEM_RARITY +
             " FROM " + TABLE_ITEMS;
 
+    private final String DELETE_ALL_ITEMS =
+            " DELETE FROM " + TABLE_ITEMS + " WHERE 1=1;";
+
     private final String INSERT_ITEM =
             " INSERT INTO " + TABLE_ITEMS + " ( " +
                     COLUMN_ITEM_NAME + ", " +
@@ -92,6 +95,10 @@ public class Datasource {
             //Set up prepared statements
             psInsertNewItem = conn.prepareStatement(INSERT_ITEM);
 
+            //DEBUG: Statement to delete all items for a fresh start
+            deleteAllItems();
+
+            //DEBUG: Testing item creation
             insertNewItem("Item 1", "common", "weapon", 12, 4, "A big item.", "", -1, -1, "", -1, -1, -1, -1);
 
             return true;
@@ -118,6 +125,14 @@ public class Datasource {
     private void createTables() {
         try (Statement statement = conn.createStatement()) {
             statement.executeQuery(CREATE_ITEMS_TABLE);
+        } catch (SQLException e) {
+            System.out.println("Query failed: " + e.getMessage());
+        }
+    }
+
+    private void deleteAllItems() {
+        try (Statement statement = conn.createStatement()) {
+            statement.executeQuery(DELETE_ALL_ITEMS);
         } catch (SQLException e) {
             System.out.println("Query failed: " + e.getMessage());
         }
