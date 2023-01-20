@@ -54,6 +54,26 @@ public class Datasource {
             " SELECT " + COLUMN_ITEM_ID + ", " + COLUMN_ITEM_NAME + ", " + COLUMN_ITEM_TYPE + ", " + COLUMN_ITEM_RARITY +
             " FROM " + TABLE_ITEMS;
 
+    private final String INSERT_ITEM =
+            " INSERT INTO " + TABLE_ITEMS + " ( " +
+                    COLUMN_ITEM_NAME + ", " +
+                    COLUMN_ITEM_RARITY + ", " +
+                    COLUMN_ITEM_TYPE + ", " +
+                    COLUMN_ITEM_BUY_PRICE + ", " +
+                    COLUMN_ITEM_SELL_PRICE + ", " +
+                    COLUMN_ITEM_DESCRIPTION + ", " +
+                    COLUMN_ITEM_CLASS_REQ + ", " +
+                    COLUMN_ITEM_LEVEL_REQ + ", " +
+                    COLUMN_ITEM_ONE_HANDED + ", " +
+                    COLUMN_ITEM_EQUIP_SLOT + ", " +
+                    COLUMN_ITEM_DMG_MIN + ", " +
+                    COLUMN_ITEM_DMG_MAX + ", " +
+                    COLUMN_ITEM_ARMOR + ", " +
+                    COLUMN_ITEM_HEALTH + " ) " +
+            " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+
+    private PreparedStatement psInsertNewItem;
+
     private Connection conn;
 
     private static Datasource instance = new Datasource();
@@ -69,6 +89,11 @@ public class Datasource {
             //Set up the initial state of the database
             createTables();
 
+            //Set up prepared statements
+            psInsertNewItem = conn.prepareStatement(INSERT_ITEM);
+
+            insertNewItem("Item 1", "common", "weapon", 12, 4, "A big item.", "", -1, -1, "", -1, -1, -1, -1);
+
             return true;
         } catch (SQLException e) {
             System.out.println("Couldn't connect to database: " + e.getMessage());
@@ -78,6 +103,11 @@ public class Datasource {
 
     public void close() {
         try {
+            //Close all prepared statements
+            if (psInsertNewItem != null)
+                psInsertNewItem.close();
+
+            //Close the connection to the database
             if (conn != null)
                 conn.close();
         } catch (SQLException e) {
@@ -90,6 +120,90 @@ public class Datasource {
             statement.executeQuery(CREATE_ITEMS_TABLE);
         } catch (SQLException e) {
             System.out.println("Query failed: " + e.getMessage());
+        }
+    }
+
+    public void insertNewItem(
+            String name, String rarity, String type, int buyPrice, int sellPrice, String description, String classReq,
+            int levelReq, int oneHanded, String equipSlot, int dmgMin, int dmgMax, int armor, int health
+            ) {
+
+        try {
+            conn.setAutoCommit(false);
+
+            //Info that all items must have
+            psInsertNewItem.setString(1, name);
+            psInsertNewItem.setString(2, rarity);
+            psInsertNewItem.setString(3, type);
+            psInsertNewItem.setInt(4, buyPrice);
+            psInsertNewItem.setInt(5, sellPrice);
+            psInsertNewItem.setString(6, description);
+
+            //Other optional info based on type
+            if ((classReq == ""))
+                psInsertNewItem.setNull(7, Types.NULL);
+            else
+                psInsertNewItem.setString(7, classReq);
+
+            if ((levelReq == -1))
+                psInsertNewItem.setNull(8, Types.NULL);
+            else
+                psInsertNewItem.setInt(8, levelReq);
+
+            if ((oneHanded == -1))
+                psInsertNewItem.setNull(9, Types.NULL);
+            else
+                psInsertNewItem.setInt(9, oneHanded);
+
+            if ((equipSlot == ""))
+                psInsertNewItem.setNull(10, Types.NULL);
+            else
+                psInsertNewItem.setString(10, equipSlot);
+
+            if ((dmgMin == -1))
+                psInsertNewItem.setNull(11, Types.NULL);
+            else
+                psInsertNewItem.setInt(11, dmgMin);
+
+            if ((dmgMax == -1))
+                psInsertNewItem.setNull(12, Types.NULL);
+            else
+                psInsertNewItem.setInt(12, dmgMax);
+
+            if ((armor == -1))
+                psInsertNewItem.setNull(13, Types.NULL);
+            else
+                psInsertNewItem.setInt(13, armor);
+
+            if ((health == -1))
+                psInsertNewItem.setNull(14, Types.NULL);
+            else
+                psInsertNewItem.setInt(14, health);
+
+            int affectedRows = psInsertNewItem.executeUpdate();
+
+            if (affectedRows == 1) {
+                conn.commit();
+            } else {
+                throw new SQLException("The song insert failed");
+            }
+
+        } catch(Exception e) {
+            System.out.println("Insert song exception: " + e.getMessage());
+            try {
+                System.out.println("Performing rollback");
+                conn.rollback();
+            } catch(SQLException e2) {
+                System.out.println("Oh boy! Things are really bad! " + e2.getMessage());
+            }
+        } finally {
+            try {
+                System.out.println("Resetting default commit behavior");
+                conn.setAutoCommit(true);
+            } catch(SQLException e) {
+                System.out.println("Couldn't reset auto-commit! " + e.getMessage());
+            }
+
         }
     }
 }
