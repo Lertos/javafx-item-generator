@@ -1,26 +1,29 @@
 package com.lertos.javafxitemgenerator.model;
 
+import com.lertos.javafxitemgenerator.model.enums.Classes;
+import com.lertos.javafxitemgenerator.model.enums.EquipmentSlots;
+import com.lertos.javafxitemgenerator.model.enums.ItemTypes;
+import com.lertos.javafxitemgenerator.model.enums.Rarities;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class SetupData {
 
-    private List<String> itemTypes;
-    private List<String> rarities;
-    private List<String> classes;
-    private List<String> equipmentSlots;
+    private List<String> itemTypes = new ArrayList<>();
+    private List<String> rarities = new ArrayList<>();
+    private List<String> classes = new ArrayList<>();
+    private List<String> equipmentSlots = new ArrayList<>();
 
     public SetupData() {
-        setupItemTypes();
-        setupRarities();
-        setupClasses();
-        setupEquipmentSlots();
+        setupList(itemTypes, ItemTypes.values());
+        setupList(rarities, Rarities.values());
+        setupList(classes, Classes.values());
+        setupList(equipmentSlots, EquipmentSlots.values());
     }
 
-    public List<String> getItemTypes() {
-        return Collections.unmodifiableList(itemTypes);
-    }
+    public List<String> getItemTypes() { return Collections.unmodifiableList(itemTypes); }
 
     public List<String> getRarities() {
         return Collections.unmodifiableList(rarities);
@@ -34,42 +37,9 @@ public class SetupData {
         return Collections.unmodifiableList(equipmentSlots);
     }
 
-    private void setupItemTypes() {
-        itemTypes = new ArrayList<>();
-
-        itemTypes.add("base");
-        itemTypes.add("weapon");
-        itemTypes.add("armor");
-        itemTypes.add("quest");
-        itemTypes.add("unique");
-        itemTypes.add("junk");
-    }
-
-    private void setupRarities() {
-        rarities = new ArrayList<>();
-
-        rarities.add("common");
-        rarities.add("uncommon");
-        rarities.add("rare");
-        rarities.add("legendary");
-    }
-
-    private void setupClasses() {
-        classes = new ArrayList<>();
-
-        classes.add("warrior");
-        classes.add("archer");
-        classes.add("mage");
-    }
-
-    private void setupEquipmentSlots() {
-        equipmentSlots = new ArrayList<>();
-
-        equipmentSlots.add("helmet");
-        equipmentSlots.add("chest");
-        equipmentSlots.add("legs");
-        equipmentSlots.add("gloves");
-        equipmentSlots.add("boots");
+    private <T extends Enum> void setupList(List list, T[] values) {
+        for (T value : values)
+            list.add(value.name());
     }
 
 }
