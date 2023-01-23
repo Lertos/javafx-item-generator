@@ -26,12 +26,7 @@ public class Controller {
     private ChoiceBox cbItemTypes;
     @FXML
     private ChoiceBox cbWeaponClasses;
-    @FXML
-    private Button btnSave;
-    @FXML
-    private Button btnClear;
-    @FXML
-    private Button btnDelete;
+
 
     public void loadSetupData() {
         SetupData setupData = new SetupData();
