@@ -77,6 +77,7 @@ public class Controller {
             return;
         }
         showDialog("Your item has been successfully added");
+        onClearButtonClick();
     }
 
     public static void showDialog(String message) {
@@ -134,7 +135,15 @@ public class Controller {
 
     @FXML
     protected void onClearButtonClick() {
-        System.out.println("Test Clear");
+        //Chose not to reset dropdowns as they will most likely want to add multiple of the same type at the same time
+        tfItemId.setText("");
+        tfItemName.setText("");
+        tfDescription.setText("");
+
+        tfLevelReqWeapon.setText("");
+        tfDmgMin.setText("");
+        tfDmgMax.setText("");
+        tfItemId.setText("");
     }
 
     @FXML
