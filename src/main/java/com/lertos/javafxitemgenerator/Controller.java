@@ -79,7 +79,7 @@ public class Controller {
         showDialog("Your item has been successfully added");
     }
 
-    private void showDialog(String message) {
+    public static void showDialog(String message) {
         Dialog<String> dialog = new Dialog<>();
         ButtonType buttonType = new ButtonType("Understood", ButtonBar.ButtonData.OK_DONE);
         dialog.setContentText(message);
