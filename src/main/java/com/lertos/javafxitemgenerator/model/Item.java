@@ -19,10 +19,10 @@ public class Item {
         this.name = new SimpleStringProperty();
         this.type = new SimpleStringProperty();
         this.description = new SimpleStringProperty();
-        this.classReq = new SimpleStringProperty();
-        this.levelReq = new SimpleIntegerProperty();
-        this.dmgMin = new SimpleIntegerProperty();
-        this.dmgMax = new SimpleIntegerProperty();
+        this.classReq = new SimpleStringProperty("");
+        this.levelReq = new SimpleIntegerProperty(-1);
+        this.dmgMin = new SimpleIntegerProperty(-1);
+        this.dmgMax = new SimpleIntegerProperty(-1);
     }
 
     public String getId() { return id.get(); }
