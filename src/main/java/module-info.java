@@ -3,6 +3,7 @@ module com.lertos.javafxitemgenerator {
     requires javafx.fxml;
     requires java.sql;
 
+    opens com.lertos.javafxitemgenerator.model to javafx.base;
     opens com.lertos.javafxitemgenerator to javafx.fxml;
     exports com.lertos.javafxitemgenerator;
 }
