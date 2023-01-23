@@ -19,6 +19,7 @@ public class Main extends Application {
         Controller controller = fxmlLoader.getController();
 
         controller.loadSetupData();
+        controller.listItems();
 
         stage.setTitle("Item Generator");
         stage.setResizable(false);
