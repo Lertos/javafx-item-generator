@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class Controller {
 
@@ -143,6 +144,11 @@ public class Controller {
 
     @FXML
     protected void onDeleteButtonClick() {
+        List<Item> items = Datasource.getInstance().queryAllItems();
+
+        for (Item item : items)
+            System.out.println(item.toString());
+
         System.out.println("Test Delete");
     }
 }
