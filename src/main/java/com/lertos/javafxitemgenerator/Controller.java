@@ -3,6 +3,9 @@ package com.lertos.javafxitemgenerator;
 import com.lertos.javafxitemgenerator.model.Datasource;
 import com.lertos.javafxitemgenerator.model.Item;
 import com.lertos.javafxitemgenerator.model.SetupData;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -27,7 +30,15 @@ public class Controller {
     private ChoiceBox cbItemTypes;
     @FXML
     private ChoiceBox cbWeaponClasses;
+    @FXML
+    private TableView itemTable;
 
+    public void listItems() {
+        Task<ObservableList<Item>> task = new GetAllItemsTask();
+        itemTable.itemsProperty().bind(task.valueProperty());
+
+        new Thread(task).start();
+    }
 
     public void loadSetupData() {
         SetupData setupData = new SetupData();
@@ -73,7 +84,11 @@ public class Controller {
             return;
         }
         showDialog("Your item has been successfully added");
+
+        //Clear all fields
         onClearButtonClick();
+        //Repopulate the item table list
+        listItems();
     }
 
     public static void showDialog(String message) {
@@ -150,5 +165,12 @@ public class Controller {
             System.out.println(item.toString());
 
         System.out.println("Test Delete");
+    }
+}
+
+class GetAllItemsTask extends Task {
+    @Override
+    public ObservableList<Item> call()  {
+        return FXCollections.observableArrayList(Datasource.getInstance().queryAllItems());
     }
 }
