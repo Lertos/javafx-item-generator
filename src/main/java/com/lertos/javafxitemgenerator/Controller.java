@@ -33,6 +33,22 @@ public class Controller {
     @FXML
     private TableView itemTable;
 
+    public void setItemTableEventListener() {
+        itemTable.setRowFactory(tv -> {
+            TableRow<Item> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    loadItemIntoGUI(row.getItem().getId());
+                }
+            });
+            return row;
+        });
+    }
+
+    private void loadItemIntoGUI(String itemId) {
+
+    }
+
     public void listItems() {
         Task<ObservableList<Item>> task = new GetAllItemsTask();
         itemTable.itemsProperty().bind(task.valueProperty());
@@ -159,11 +175,6 @@ public class Controller {
 
     @FXML
     protected void onDeleteButtonClick() {
-        List<Item> items = Datasource.getInstance().queryAllItems();
-
-        for (Item item : items)
-            System.out.println(item.toString());
-
         System.out.println("Test Delete");
     }
 }
