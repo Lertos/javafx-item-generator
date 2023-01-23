@@ -8,9 +8,7 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-
 import java.sql.SQLException;
-import java.util.List;
 
 public class Controller {
 
@@ -32,6 +30,8 @@ public class Controller {
     private ChoiceBox cbWeaponClasses;
     @FXML
     private TableView itemTable;
+    @FXML
+    private TabPane tpMain;
 
     public void setItemTableEventListener() {
         itemTable.setRowFactory(tv -> {
@@ -46,7 +46,27 @@ public class Controller {
     }
 
     private void loadItemIntoGUI(String itemId) {
+        Item item;
 
+        try {
+            item = Datasource.getInstance().querySingleItem(itemId);
+        } catch (SQLException e) {
+            showDialog("That item does not exist");
+            return;
+        }
+
+        //Switch back to the item creation tab
+        tpMain.getSelectionModel().select(0);
+
+        //
+        tfItemId.setText(item.getId());
+        tfItemName.setText(item.getName());
+        cbItemTypes.getSelectionModel().select(item.getType());
+        tfDescription.setText(item.getDescription());
+        cbWeaponClasses.getSelectionModel().select(item.getClassReq());
+        tfLevelReqWeapon.setText(String.valueOf(item.getLevelReq()));
+        tfDmgMin.setText(String.valueOf(item.getDmgMin()));
+        tfDmgMax.setText(String.valueOf(item.getDmgMax()));
     }
 
     public void listItems() {

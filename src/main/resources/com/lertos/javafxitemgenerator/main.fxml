@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefWidth="400.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lertos.javafxitemgenerator.Controller">
+<TabPane fx:id="tpMain" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefWidth="400.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lertos.javafxitemgenerator.Controller">
   <tabs>
     <Tab text="Create">
       <content>
@@ -106,7 +106,7 @@
       <content>
         <AnchorPane fx:id="itemTableParent" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <TableView fx:id="itemTable" prefWidth="${itemTableParent.width}" prefHeight="${itemTableParent.height}">
+                  <TableView fx:id="itemTable" prefHeight="${itemTableParent.height}" prefWidth="${itemTableParent.width}">
                       <columns>
                           <TableColumn text="ID">
                               <cellValueFactory>

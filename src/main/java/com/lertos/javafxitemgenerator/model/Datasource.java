@@ -42,6 +42,19 @@ public class Datasource {
             " SELECT " + COLUMN_ITEM_ID + ", " + COLUMN_ITEM_NAME + ", " + COLUMN_ITEM_TYPE +
             " FROM " + TABLE_ITEMS;
 
+    private final String QUERY_ITEM_INFO_SINGLE =
+            " SELECT " +
+                    COLUMN_ITEM_ID + ", " +
+                    COLUMN_ITEM_NAME + ", " +
+                    COLUMN_ITEM_TYPE + ", " +
+                    COLUMN_ITEM_DESCRIPTION + ", " +
+                    COLUMN_ITEM_CLASS_REQ + ", " +
+                    COLUMN_ITEM_LEVEL_REQ + ", " +
+                    COLUMN_ITEM_DMG_MIN + ", " +
+                    COLUMN_ITEM_DMG_MAX +
+            " FROM " + TABLE_ITEMS +
+            " WHERE " + COLUMN_ITEM_ID + " = ?;";
+
     private final String DELETE_ALL_ITEMS =
             " DELETE FROM " + TABLE_ITEMS + " WHERE 1=1;";
 
@@ -57,6 +70,7 @@ public class Datasource {
                     COLUMN_ITEM_DMG_MAX +
             " ) VALUES (?,?,?,?,?,?,?,?) ";
 
+    private PreparedStatement psQuerySingleItem;
     private PreparedStatement psInsertNewItem;
 
     private Connection conn;
@@ -78,6 +92,7 @@ public class Datasource {
             createTables();
 
             //Set up prepared statements
+            psQuerySingleItem = conn.prepareStatement(QUERY_ITEM_INFO_SINGLE);
             psInsertNewItem = conn.prepareStatement(INSERT_ITEM);
 
             //DEBUG: Statement to delete all items for a fresh start
@@ -108,6 +123,7 @@ public class Datasource {
         try {
             //Close all prepared statements
             if (psInsertNewItem != null)
+                psQuerySingleItem.close();
                 psInsertNewItem.close();
 
             //Close the connection to the database
@@ -144,6 +160,34 @@ public class Datasource {
         } catch (SQLException e) {
             System.out.println("Query failed: " + e.getMessage());
         }
+        return null;
+    }
+
+    public Item querySingleItem(String itemId) throws SQLException {
+        try {
+            psQuerySingleItem.setString(1, itemId);
+            ResultSet results = psQuerySingleItem.executeQuery();
+
+            while(results.next()) {
+                Item item = new Item();
+
+                item.setId(results.getString(COLUMN_ITEM_ID));
+                item.setName(results.getString(COLUMN_ITEM_NAME));
+                item.setType(results.getString(COLUMN_ITEM_TYPE));
+                item.setDescription(results.getString(COLUMN_ITEM_DESCRIPTION));
+
+                if (results.getString(COLUMN_ITEM_TYPE).equalsIgnoreCase("WEAPON")) {
+                    item.setClassReq(results.getString(COLUMN_ITEM_CLASS_REQ));
+                    item.setLevelReq(results.getInt(COLUMN_ITEM_LEVEL_REQ));
+                    item.setDmgMin(results.getInt(COLUMN_ITEM_DMG_MIN));
+                    item.setDmgMax(results.getInt(COLUMN_ITEM_DMG_MAX));
+                }
+
+                return item;
+            }
+        } catch (SQLException sqlException) {
+            throw new SQLException(sqlException.getMessage());
+        } catch(Exception e) {}
         return null;
     }
 
