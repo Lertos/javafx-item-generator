@@ -5,7 +5,7 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class Item {
 
-    private SimpleIntegerProperty id;
+    private SimpleStringProperty id;
     private SimpleStringProperty name;
     private SimpleStringProperty type;
     private SimpleStringProperty description;
@@ -15,7 +15,7 @@ public class Item {
     private SimpleIntegerProperty dmgMax;
 
     public Item() {
-        this.id = new SimpleIntegerProperty();
+        this.id = new SimpleStringProperty();
         this.name = new SimpleStringProperty();
         this.type = new SimpleStringProperty();
         this.description = new SimpleStringProperty();
@@ -25,9 +25,9 @@ public class Item {
         this.dmgMax = new SimpleIntegerProperty();
     }
 
-    public int getId() { return id.get(); }
+    public String getId() { return id.get(); }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id.set(id);
     }
 

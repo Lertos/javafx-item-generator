@@ -12,7 +12,7 @@ public class Datasource {
 
     private final String TABLE_ITEMS = "items";
 
-    private final String COLUMN_ITEM_ID = "id";
+    private final String COLUMN_ITEM_ID = "item_id";
     private final String COLUMN_ITEM_NAME = "name";
     private final String COLUMN_ITEM_TYPE = "type";
     private final String COLUMN_ITEM_DESCRIPTION = "description";
@@ -25,7 +25,7 @@ public class Datasource {
     // QUERIES
     //-------------------------
     private final String CREATE_ITEMS_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_ITEMS + " (" +
-            "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "item_id TEXT NOT NULL," +
             "name TEXT NOT NULL," +
             "type TEXT NOT NULL," +
             "description TEXT NULL," +
@@ -33,6 +33,7 @@ public class Datasource {
             "level_req INT NULL," +
             "dmg_min INT NULL," +
             "dmg_max INT NULL," +
+            "CONSTRAINT constraint_unique_id primary key(item_id)," +
             "CONSTRAINT constraint_unique_item UNIQUE (name, type)" +
             ");";
 
@@ -78,8 +79,8 @@ public class Datasource {
             deleteAllItems();
 
             //DEBUG: Testing item creation
-            insertNewItem("Item 1", "base", "A big item.", "", -1, -1, -1);
-            insertNewItem("Item 2", "weapon", "A big item 2.", "WARRIOR", 10, 1, 4);
+            insertNewItem("my_item_1", "Item 1", "base", "A big item.", "", -1, -1, -1);
+            insertNewItem("my_item_2", "Item 2", "weapon", "A big item 2.", "WARRIOR", 10, 1, 4);
 
             return true;
         } catch (SQLException e) {
@@ -118,12 +119,13 @@ public class Datasource {
         }
     }
 
-    public void insertNewItem(String name, String type, String description, String classReq, int levelReq, int dmgMin, int dmgMax) {
+    public void insertNewItem(String itemId, String name, String type, String description, String classReq, int levelReq, int dmgMin, int dmgMax) {
 
         try {
             conn.setAutoCommit(false);
 
             //Info that all items must have
+            psInsertNewItem.setString(0, itemId);
             psInsertNewItem.setString(1, name);
             psInsertNewItem.setString(2, type);
             psInsertNewItem.setString(3, description);
