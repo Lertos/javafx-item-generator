@@ -30,7 +30,7 @@ public class Main extends Application {
     public void init() throws Exception {
         super.init();
         if(!Datasource.getInstance().open()) {
-            System.out.println("FATAL ERROR: Couldn't connect to database");
+            Controller.showDialog("FATAL ERROR: Couldn't connect to database");
             Platform.exit();
         }
     }
