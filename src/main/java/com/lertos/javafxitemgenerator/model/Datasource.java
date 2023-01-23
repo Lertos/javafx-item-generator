@@ -51,8 +51,8 @@ public class Datasource {
                     COLUMN_ITEM_CLASS_REQ + ", " +
                     COLUMN_ITEM_LEVEL_REQ + ", " +
                     COLUMN_ITEM_DMG_MIN + ", " +
-                    COLUMN_ITEM_DMG_MAX + ", " +
-            " VALUES (?,?,?,?,?,?,?) ";
+                    COLUMN_ITEM_DMG_MAX +
+            " ) VALUES (?,?,?,?,?,?,?) ";
 
     private PreparedStatement psInsertNewItem;
 
