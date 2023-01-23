@@ -50,11 +50,7 @@ public class Controller {
             errorMessage = validateWeaponInfo();
 
         if (!errorMessage.isEmpty()) {
-            Dialog<String> dialog = new Dialog<>();
-            ButtonType buttonType = new ButtonType("Understood", ButtonBar.ButtonData.OK_DONE);
-            dialog.setContentText(errorMessage);
-            dialog.getDialogPane().getButtonTypes().add(buttonType);
-            dialog.showAndWait();
+            showDialog(errorMessage);
             return;
         }
 
@@ -72,6 +68,16 @@ public class Controller {
             item.setDmgMax(Integer.parseInt(tfDmgMax.getText()));
         }
         Datasource.getInstance().insertNewItem(item);
+
+        showDialog("Your item has been successfully added");
+    }
+
+    private void showDialog(String message) {
+        Dialog<String> dialog = new Dialog<>();
+        ButtonType buttonType = new ButtonType("Understood", ButtonBar.ButtonData.OK_DONE);
+        dialog.setContentText(message);
+        dialog.getDialogPane().getButtonTypes().add(buttonType);
+        dialog.showAndWait();
     }
 
     private String validateBaseInfo() {
