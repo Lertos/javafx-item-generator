@@ -3,6 +3,7 @@ package com.lertos.javafxitemgenerator.model;
 import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Datasource {
 
@@ -15,7 +16,7 @@ public class Datasource {
     private final String COLUMN_ITEM_ID = "item_id";
     private final String COLUMN_ITEM_NAME = "name";
     private final String COLUMN_ITEM_TYPE = "type";
-    private final String COLUMN_ITEM_DESCRIPTION = "description";
+    private final String COLUMN_ITEM_DESCRIPTION = "desc";
     private final String COLUMN_ITEM_CLASS_REQ = "class_req";
     private final String COLUMN_ITEM_LEVEL_REQ = "level_req";
     private final String COLUMN_ITEM_DMG_MIN = "dmg_min";
@@ -25,16 +26,16 @@ public class Datasource {
     // QUERIES
     //-------------------------
     private final String CREATE_ITEMS_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_ITEMS + " (" +
-            "item_id TEXT NOT NULL," +
-            "name TEXT NOT NULL," +
-            "type TEXT NOT NULL," +
-            "description TEXT NULL," +
-            "class_req TEXT NULL," +
-            "level_req INT NULL," +
-            "dmg_min INT NULL," +
-            "dmg_max INT NULL," +
-            "CONSTRAINT constraint_unique_id primary key(item_id)," +
-            "CONSTRAINT constraint_unique_item UNIQUE (name, type)" +
+            COLUMN_ITEM_ID + " TEXT NOT NULL, " +
+            COLUMN_ITEM_NAME + " TEXT NOT NULL, " +
+            COLUMN_ITEM_TYPE + " TEXT NOT NULL, " +
+            COLUMN_ITEM_DESCRIPTION + " TEXT NULL, " +
+            COLUMN_ITEM_CLASS_REQ + " TEXT NULL, " +
+            COLUMN_ITEM_LEVEL_REQ + " INT NULL, " +
+            COLUMN_ITEM_DMG_MIN + " INT NULL, " +
+            COLUMN_ITEM_DMG_MAX + " INT NULL, " +
+            "CONSTRAINT constraint_unique_id primary key(" + COLUMN_ITEM_ID + ")," +
+            "CONSTRAINT constraint_unique_item UNIQUE (" + COLUMN_ITEM_NAME + ", " + COLUMN_ITEM_TYPE + ")" +
             ");";
 
     private final String QUERY_ITEM_INFO =
@@ -69,6 +70,9 @@ public class Datasource {
     public boolean open() {
         try {
             conn = DriverManager.getConnection(CONNECTION_STRING);
+
+            //For debugging where the DB file is created
+            System.out.println(CONNECTION_STRING.replace("\\\\", "\\"));
 
             //Set up the initial state of the database
             createTables();
@@ -122,6 +126,27 @@ public class Datasource {
         }
     }
 
+    public List<Item> queryAllItems() {
+        try (Statement statement = conn.createStatement()) {
+            ResultSet results = statement.executeQuery(QUERY_ITEM_INFO);
+
+            List<Item> items = new ArrayList<>();
+            while (results.next()) {
+                Item item = new Item();
+
+                item.setId(results.getString(COLUMN_ITEM_ID));
+                item.setName(results.getString(COLUMN_ITEM_NAME));
+                item.setType(results.getString(COLUMN_ITEM_TYPE));
+
+                items.add(item);
+            }
+            return items;
+        } catch (SQLException e) {
+            System.out.println("Query failed: " + e.getMessage());
+        }
+        return null;
+    }
+
     private void deleteAllItems() {
         try (Statement statement = conn.createStatement()) {
             statement.execute(DELETE_ALL_ITEMS);
@@ -132,8 +157,6 @@ public class Datasource {
 
     public void insertNewItem(Item item) throws SQLException {
         try {
-            conn.setAutoCommit(false);
-
             //Info that all items must have
             psInsertNewItem.setString(1, item.getId());
             psInsertNewItem.setString(2, item.getName());
