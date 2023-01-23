@@ -79,4 +79,8 @@ public class Item {
 
     public void setDmgMax(int dmgMax) { this.dmgMax.set(dmgMax); }
 
+    @Override
+    public String toString() {
+        return "Item {" + " id=" + getId() + ", name=" + getName() + ", type=" + getType() + " }";
+    }
 }
