@@ -46,6 +46,7 @@ public class Datasource {
 
     private final String INSERT_ITEM =
             " INSERT INTO " + TABLE_ITEMS + " ( " +
+                    COLUMN_ITEM_ID + ", " +
                     COLUMN_ITEM_NAME + ", " +
                     COLUMN_ITEM_TYPE + ", " +
                     COLUMN_ITEM_DESCRIPTION + ", " +
@@ -53,7 +54,7 @@ public class Datasource {
                     COLUMN_ITEM_LEVEL_REQ + ", " +
                     COLUMN_ITEM_DMG_MIN + ", " +
                     COLUMN_ITEM_DMG_MAX +
-            " ) VALUES (?,?,?,?,?,?,?) ";
+            " ) VALUES (?,?,?,?,?,?,?,?) ";
 
     private PreparedStatement psInsertNewItem;
 
@@ -79,8 +80,18 @@ public class Datasource {
             deleteAllItems();
 
             //DEBUG: Testing item creation
-            insertNewItem("my_item_1", "Item 1", "base", "A big item.", "", -1, -1, -1);
-            insertNewItem("my_item_2", "Item 2", "weapon", "A big item 2.", "WARRIOR", 10, 1, 4);
+            Item item = new Item();
+
+            item.setId("axe");
+            item.setName("Axe");
+            item.setType("WEAPON");
+            item.setDescription("A big ol weapon");
+            item.setClassReq("WARRIOR");
+            item.setLevelReq(1);
+            item.setDmgMin(2);
+            item.setDmgMax(10);
+
+            insertNewItem(item);
 
             return true;
         } catch (SQLException e) {
@@ -119,37 +130,37 @@ public class Datasource {
         }
     }
 
-    public void insertNewItem(String itemId, String name, String type, String description, String classReq, int levelReq, int dmgMin, int dmgMax) {
+    public void insertNewItem(Item item) {
 
         try {
             conn.setAutoCommit(false);
 
             //Info that all items must have
-            psInsertNewItem.setString(0, itemId);
-            psInsertNewItem.setString(1, name);
-            psInsertNewItem.setString(2, type);
-            psInsertNewItem.setString(3, description);
+            psInsertNewItem.setString(1, item.getId());
+            psInsertNewItem.setString(2, item.getName());
+            psInsertNewItem.setString(3, item.getType());
+            psInsertNewItem.setString(4, item.getDescription());
 
             //Other optional info based on type
-            if ((classReq == ""))
-                psInsertNewItem.setNull(4, Types.NULL);
-            else
-                psInsertNewItem.setString(4, classReq);
-
-            if ((levelReq == -1))
+            if ((item.getClassReq() == ""))
                 psInsertNewItem.setNull(5, Types.NULL);
             else
-                psInsertNewItem.setInt(5, levelReq);
+                psInsertNewItem.setString(5, item.getClassReq());
 
-            if ((dmgMin == -1))
+            if ((item.getLevelReq() == -1))
                 psInsertNewItem.setNull(6, Types.NULL);
             else
-                psInsertNewItem.setInt(6, dmgMin);
+                psInsertNewItem.setInt(6, item.getLevelReq());
 
-            if ((dmgMax == -1))
+            if ((item.getDmgMin() == -1))
                 psInsertNewItem.setNull(7, Types.NULL);
             else
-                psInsertNewItem.setInt(7, dmgMax);
+                psInsertNewItem.setInt(7, item.getDmgMin());
+
+            if ((item.getDmgMax() == -1))
+                psInsertNewItem.setNull(8, Types.NULL);
+            else
+                psInsertNewItem.setInt(8, item.getDmgMax());
 
             int affectedRows = psInsertNewItem.executeUpdate();
 
