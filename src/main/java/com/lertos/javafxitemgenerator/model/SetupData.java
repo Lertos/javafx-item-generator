@@ -1,9 +1,7 @@
 package com.lertos.javafxitemgenerator.model;
 
 import com.lertos.javafxitemgenerator.model.enums.Classes;
-import com.lertos.javafxitemgenerator.model.enums.EquipmentSlots;
 import com.lertos.javafxitemgenerator.model.enums.ItemTypes;
-import com.lertos.javafxitemgenerator.model.enums.Rarities;
 
 import java.util.ArrayList;
 import java.util.Collections;
