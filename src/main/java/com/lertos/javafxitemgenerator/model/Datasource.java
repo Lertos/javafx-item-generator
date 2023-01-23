@@ -130,8 +130,7 @@ public class Datasource {
         }
     }
 
-    public void insertNewItem(Item item) {
-
+    public void insertNewItem(Item item) throws SQLException {
         try {
             conn.setAutoCommit(false);
 
@@ -164,26 +163,10 @@ public class Datasource {
 
             int affectedRows = psInsertNewItem.executeUpdate();
 
-            if (affectedRows == 1) {
-                conn.commit();
-            } else {
-                throw new SQLException("The item insert failed");
-            }
-
-        } catch(Exception e) {
-            System.out.println("Insert item exception: " + e.getMessage());
-            try {
-                System.out.println("Performing rollback");
-                conn.rollback();
-            } catch(SQLException e2) {
-                System.out.println("Rollback failed: " + e2.getMessage());
-            }
-        } finally {
-            try {
-                conn.setAutoCommit(true);
-            } catch(SQLException e) {
-                System.out.println("Resetting auto-commit failed: " + e.getMessage());
-            }
-        }
+            if (affectedRows != 1)
+                throw new SQLException("No records were inserted");
+        } catch (SQLException sqlException) {
+            throw new SQLException(sqlException.getMessage());
+        } catch(Exception e) {}
     }
 }

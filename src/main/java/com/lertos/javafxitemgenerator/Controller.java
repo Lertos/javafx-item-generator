@@ -6,6 +6,8 @@ import com.lertos.javafxitemgenerator.model.SetupData;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
+import java.sql.SQLException;
+
 public class Controller {
 
     @FXML
@@ -67,8 +69,13 @@ public class Controller {
             item.setDmgMin(Integer.parseInt(tfDmgMin.getText()));
             item.setDmgMax(Integer.parseInt(tfDmgMax.getText()));
         }
-        Datasource.getInstance().insertNewItem(item);
 
+        try {
+            Datasource.getInstance().insertNewItem(item);
+        } catch (SQLException e) {
+            showDialog("ERROR - Record could not be added:\n\n" + e.getMessage());
+            return;
+        }
         showDialog("Your item has been successfully added");
     }
 
