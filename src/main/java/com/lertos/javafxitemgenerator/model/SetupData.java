@@ -12,29 +12,17 @@ import java.util.List;
 public class SetupData {
 
     private List<String> itemTypes = new ArrayList<>();
-    private List<String> rarities = new ArrayList<>();
     private List<String> classes = new ArrayList<>();
-    private List<String> equipmentSlots = new ArrayList<>();
 
     public SetupData() {
         setupList(itemTypes, ItemTypes.values());
-        setupList(rarities, Rarities.values());
         setupList(classes, Classes.values());
-        setupList(equipmentSlots, EquipmentSlots.values());
     }
 
     public List<String> getItemTypes() { return Collections.unmodifiableList(itemTypes); }
 
-    public List<String> getRarities() {
-        return Collections.unmodifiableList(rarities);
-    }
-
     public List<String> getClasses() {
         return Collections.unmodifiableList(classes);
-    }
-
-    public List<String> getEquipmentSlots() {
-        return Collections.unmodifiableList(equipmentSlots);
     }
 
     private <T extends Enum> void setupList(List list, T[] values) {

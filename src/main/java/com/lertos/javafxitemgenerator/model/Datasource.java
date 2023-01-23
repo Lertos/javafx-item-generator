@@ -14,19 +14,12 @@ public class Datasource {
 
     private final String COLUMN_ITEM_ID = "id";
     private final String COLUMN_ITEM_NAME = "name";
-    private final String COLUMN_ITEM_RARITY = "rarity";
     private final String COLUMN_ITEM_TYPE = "type";
-    private final String COLUMN_ITEM_BUY_PRICE = "buy_price";
-    private final String COLUMN_ITEM_SELL_PRICE = "sell_price";
     private final String COLUMN_ITEM_DESCRIPTION = "description";
     private final String COLUMN_ITEM_CLASS_REQ = "class_req";
     private final String COLUMN_ITEM_LEVEL_REQ = "level_req";
-    private final String COLUMN_ITEM_ONE_HANDED = "one_handed";
-    private final String COLUMN_ITEM_EQUIP_SLOT = "equip_slot";
     private final String COLUMN_ITEM_DMG_MIN = "dmg_min";
     private final String COLUMN_ITEM_DMG_MAX = "dmg_max";
-    private final String COLUMN_ITEM_ARMOR = "armor";
-    private final String COLUMN_ITEM_HEALTH = "health";
 
     //-------------------------
     // QUERIES
@@ -34,24 +27,17 @@ public class Datasource {
     private final String CREATE_ITEMS_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_ITEMS + " (" +
             "id INTEGER PRIMARY KEY AUTOINCREMENT," +
             "name TEXT NOT NULL," +
-            "rarity TEXT NOT NULL," +
             "type TEXT NOT NULL," +
-            "buy_price INT NOT NULL," +
-            "sell_price INT NOT NULL," +
             "description TEXT NULL," +
             "class_req TEXT NULL," +
             "level_req INT NULL," +
-            "one_handed INT NULL," +
-            "equip_slot TEXT NULL," +
             "dmg_min INT NULL," +
             "dmg_max INT NULL," +
-            "armor INT NULL," +
-            "health INT NULL," +
-            "CONSTRAINT constraint_unique_item UNIQUE (name, rarity, type)" +
+            "CONSTRAINT constraint_unique_item UNIQUE (name, type)" +
             ");";
 
     private final String QUERY_ITEM_INFO =
-            " SELECT " + COLUMN_ITEM_ID + ", " + COLUMN_ITEM_NAME + ", " + COLUMN_ITEM_TYPE + ", " + COLUMN_ITEM_RARITY +
+            " SELECT " + COLUMN_ITEM_ID + ", " + COLUMN_ITEM_NAME + ", " + COLUMN_ITEM_TYPE +
             " FROM " + TABLE_ITEMS;
 
     private final String DELETE_ALL_ITEMS =
@@ -60,20 +46,13 @@ public class Datasource {
     private final String INSERT_ITEM =
             " INSERT INTO " + TABLE_ITEMS + " ( " +
                     COLUMN_ITEM_NAME + ", " +
-                    COLUMN_ITEM_RARITY + ", " +
                     COLUMN_ITEM_TYPE + ", " +
-                    COLUMN_ITEM_BUY_PRICE + ", " +
-                    COLUMN_ITEM_SELL_PRICE + ", " +
                     COLUMN_ITEM_DESCRIPTION + ", " +
                     COLUMN_ITEM_CLASS_REQ + ", " +
                     COLUMN_ITEM_LEVEL_REQ + ", " +
-                    COLUMN_ITEM_ONE_HANDED + ", " +
-                    COLUMN_ITEM_EQUIP_SLOT + ", " +
                     COLUMN_ITEM_DMG_MIN + ", " +
                     COLUMN_ITEM_DMG_MAX + ", " +
-                    COLUMN_ITEM_ARMOR + ", " +
-                    COLUMN_ITEM_HEALTH + " ) " +
-            " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+            " VALUES (?,?,?,?,?,?,?) ";
 
     private PreparedStatement psInsertNewItem;
 
@@ -99,9 +78,8 @@ public class Datasource {
             deleteAllItems();
 
             //DEBUG: Testing item creation
-            insertNewItem("Item 1", "common", "weapon", 12, 4, "A big item.", "", -1, -1, "", -1, -1, -1, -1);
-            insertNewItem("Item 2", "rare", "armor", 12, 4, "A big item.", "", -1, -1, "", -1, -1, -1, -1);
-            insertNewItem("Item 1", "common", "weapon", 12, 4, "A big item.", "", -1, -1, "", -1, -1, -1, -1);
+            insertNewItem("Item 1", "base", "A big item.", "", -1, -1, -1);
+            insertNewItem("Item 2", "weapon", "A big item 2.", "WARRIOR", 10, 1, 4);
 
             return true;
         } catch (SQLException e) {
@@ -140,62 +118,36 @@ public class Datasource {
         }
     }
 
-    public void insertNewItem(
-            String name, String rarity, String type, int buyPrice, int sellPrice, String description, String classReq,
-            int levelReq, int oneHanded, String equipSlot, int dmgMin, int dmgMax, int armor, int health
-            ) {
+    public void insertNewItem(String name, String type, String description, String classReq, int levelReq, int dmgMin, int dmgMax) {
 
         try {
             conn.setAutoCommit(false);
 
             //Info that all items must have
             psInsertNewItem.setString(1, name);
-            psInsertNewItem.setString(2, rarity);
-            psInsertNewItem.setString(3, type);
-            psInsertNewItem.setInt(4, buyPrice);
-            psInsertNewItem.setInt(5, sellPrice);
-            psInsertNewItem.setString(6, description);
+            psInsertNewItem.setString(2, type);
+            psInsertNewItem.setString(3, description);
 
             //Other optional info based on type
             if ((classReq == ""))
-                psInsertNewItem.setNull(7, Types.NULL);
+                psInsertNewItem.setNull(4, Types.NULL);
             else
-                psInsertNewItem.setString(7, classReq);
+                psInsertNewItem.setString(4, classReq);
 
             if ((levelReq == -1))
-                psInsertNewItem.setNull(8, Types.NULL);
+                psInsertNewItem.setNull(5, Types.NULL);
             else
-                psInsertNewItem.setInt(8, levelReq);
-
-            if ((oneHanded == -1))
-                psInsertNewItem.setNull(9, Types.NULL);
-            else
-                psInsertNewItem.setInt(9, oneHanded);
-
-            if ((equipSlot == ""))
-                psInsertNewItem.setNull(10, Types.NULL);
-            else
-                psInsertNewItem.setString(10, equipSlot);
+                psInsertNewItem.setInt(5, levelReq);
 
             if ((dmgMin == -1))
-                psInsertNewItem.setNull(11, Types.NULL);
+                psInsertNewItem.setNull(6, Types.NULL);
             else
-                psInsertNewItem.setInt(11, dmgMin);
+                psInsertNewItem.setInt(6, dmgMin);
 
             if ((dmgMax == -1))
-                psInsertNewItem.setNull(12, Types.NULL);
+                psInsertNewItem.setNull(7, Types.NULL);
             else
-                psInsertNewItem.setInt(12, dmgMax);
-
-            if ((armor == -1))
-                psInsertNewItem.setNull(13, Types.NULL);
-            else
-                psInsertNewItem.setInt(13, armor);
-
-            if ((health == -1))
-                psInsertNewItem.setNull(14, Types.NULL);
-            else
-                psInsertNewItem.setInt(14, health);
+                psInsertNewItem.setInt(7, dmgMax);
 
             int affectedRows = psInsertNewItem.executeUpdate();
 
