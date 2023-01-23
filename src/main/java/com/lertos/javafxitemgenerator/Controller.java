@@ -3,12 +3,8 @@ package com.lertos.javafxitemgenerator;
 import com.lertos.javafxitemgenerator.model.Datasource;
 import com.lertos.javafxitemgenerator.model.Item;
 import com.lertos.javafxitemgenerator.model.SetupData;
-import com.lertos.javafxitemgenerator.model.enums.ItemTypes;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 public class Controller {
 
@@ -54,7 +50,11 @@ public class Controller {
             errorMessage = validateWeaponInfo();
 
         if (!errorMessage.isEmpty()) {
-            System.out.println("ERROR: " + errorMessage);
+            Dialog<String> dialog = new Dialog<>();
+            ButtonType buttonType = new ButtonType("Understood", ButtonBar.ButtonData.OK_DONE);
+            dialog.setContentText(errorMessage);
+            dialog.getDialogPane().getButtonTypes().add(buttonType);
+            dialog.showAndWait();
             return;
         }
 
