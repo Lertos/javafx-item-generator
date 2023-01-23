@@ -1,5 +1,7 @@
 package com.lertos.javafxitemgenerator;
 
+import com.lertos.javafxitemgenerator.model.Datasource;
+import com.lertos.javafxitemgenerator.model.Item;
 import com.lertos.javafxitemgenerator.model.SetupData;
 import com.lertos.javafxitemgenerator.model.enums.ItemTypes;
 import javafx.fxml.FXML;
@@ -14,6 +16,8 @@ public class Controller {
     private TextField tfItemId;
     @FXML
     private TextField tfItemName;
+    @FXML
+    private TextField tfDescription;
     @FXML
     private TextField tfLevelReqWeapon;
     @FXML
@@ -43,7 +47,76 @@ public class Controller {
 
     @FXML
     protected void onSaveButtonClick() {
-        System.out.println("Test Save");
+        String type = cbItemTypes.getValue().toString();
+        String errorMessage = validateBaseInfo();
+
+        if (errorMessage.isEmpty() && type.equalsIgnoreCase("WEAPON"))
+            errorMessage = validateWeaponInfo();
+
+        if (!errorMessage.isEmpty()) {
+            System.out.println("ERROR: " + errorMessage);
+            return;
+        }
+
+        Item item = new Item();
+
+        item.setId(tfItemId.getText());
+        item.setName(tfItemName.getText());
+        item.setType(cbItemTypes.getValue().toString());
+        item.setDescription(tfDescription.getText());
+
+        if (type.equalsIgnoreCase("WEAPON")) {
+            item.setClassReq(cbWeaponClasses.getValue().toString());
+            item.setLevelReq(Integer.parseInt(tfLevelReqWeapon.getText()));
+            item.setDmgMin(Integer.parseInt(tfDmgMin.getText()));
+            item.setDmgMax(Integer.parseInt(tfDmgMax.getText()));
+        }
+        Datasource.getInstance().insertNewItem(item);
+    }
+
+    private String validateBaseInfo() {
+        String errorMessage = "";
+
+        if (tfItemId.getText().isEmpty())
+            errorMessage = "The Item ID field must contain a value";
+        else if (tfItemName.getText().isEmpty())
+            errorMessage = "The Item Name field must contain a value";
+        else if (tfDescription.getText().isEmpty())
+            errorMessage = "The Description field must contain a value";
+
+        return errorMessage;
+    }
+
+    private String validateWeaponInfo() {
+        String errorMessage = "";
+
+        if (tfLevelReqWeapon.getText().isEmpty())
+            errorMessage = "The Level Req field must contain a value";
+        else if (tfDmgMin.getText().isEmpty())
+            errorMessage = "The Dmg Min field must contain a value";
+        else if (tfDmgMax.getText().isEmpty())
+            errorMessage = "The Dmg Max field must contain a value";
+
+        if (!errorMessage.isEmpty())
+            return errorMessage;
+
+        if (!isValidInt(tfLevelReqWeapon.getText()))
+            errorMessage = "The Level Req field must contain a valid integer";
+        else if (!isValidInt(tfDmgMin.getText()))
+            errorMessage = "The Dmg Min field must contain a valid integer";
+        else if (!isValidInt(tfDmgMax.getText()))
+            errorMessage = "The Dmg Max field must contain a valid integer";
+
+        return errorMessage;
+    }
+
+    private boolean isValidInt(String stringToCheck) {
+        try {
+            Integer.parseInt(stringToCheck);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
     @FXML
