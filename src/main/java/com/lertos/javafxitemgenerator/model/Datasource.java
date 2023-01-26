@@ -89,7 +89,7 @@ public class Datasource {
 
     private Connection conn;
 
-    private static Datasource instance = new Datasource();
+    private final static Datasource instance = new Datasource();
 
     private Datasource() {}
 
@@ -232,7 +232,7 @@ public class Datasource {
             psInsertNewItem.setString(4, item.getDescription());
 
             //Other optional info based on type
-            if ((item.getClassReq() == ""))
+            if ((item.getClassReq().equals("")))
                 psInsertNewItem.setNull(5, Types.NULL);
             else
                 psInsertNewItem.setString(5, item.getClassReq());
@@ -269,7 +269,7 @@ public class Datasource {
             psUpdateExistingItem.setString(3, item.getDescription());
 
             //Other optional info based on type
-            if ((item.getClassReq() == ""))
+            if ((item.getClassReq().equals("")))
                 psUpdateExistingItem.setNull(4, Types.NULL);
             else
                 psUpdateExistingItem.setString(4, item.getClassReq());
