@@ -24,4 +24,6 @@ Capstone
 
 # Example output
 
-![404 NOT FOUND](example.png)
+![404 NOT FOUND](example1.png)
+
+![404 NOT FOUND](example2.png)
