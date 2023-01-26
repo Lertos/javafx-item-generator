@@ -5,14 +5,14 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class Item {
 
-    private SimpleStringProperty id;
-    private SimpleStringProperty name;
-    private SimpleStringProperty type;
-    private SimpleStringProperty description;
-    private SimpleStringProperty classReq;
-    private SimpleIntegerProperty levelReq;
-    private SimpleIntegerProperty dmgMin;
-    private SimpleIntegerProperty dmgMax;
+    private final SimpleStringProperty id;
+    private final SimpleStringProperty name;
+    private final SimpleStringProperty type;
+    private final SimpleStringProperty description;
+    private final SimpleStringProperty classReq;
+    private final SimpleIntegerProperty levelReq;
+    private final SimpleIntegerProperty dmgMin;
+    private final SimpleIntegerProperty dmgMax;
 
     public Item() {
         this.id = new SimpleStringProperty();
