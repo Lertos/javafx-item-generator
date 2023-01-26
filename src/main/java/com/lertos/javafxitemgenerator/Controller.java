@@ -113,18 +113,39 @@ public class Controller {
             item.setDmgMax(Integer.parseInt(tfDmgMax.getText()));
         }
 
-        try {
-            Datasource.getInstance().insertNewItem(item);
-        } catch (SQLException e) {
-            showDialog("ERROR - Record could not be added:\n\n" + e.getMessage());
+        if (saveItem(item))
+            showDialog("Your item has been successfully saved");
+        else
             return;
-        }
-        showDialog("Your item has been successfully added");
 
         //Clear all fields
         onClearButtonClick();
         //Repopulate the item table list
         listItems();
+    }
+
+    private boolean saveItem(Item item) {
+        Item itemExists;
+
+        try {
+            itemExists = Datasource.getInstance().querySingleItem(item.getId());
+        } catch (SQLException e) {
+            showDialog("ERROR - Record could not be added:\n\n" + e.getMessage());
+            return false;
+        }
+
+        try {
+            //If it doesn't exist, save the item as a new item
+            if (itemExists == null)
+                Datasource.getInstance().insertNewItem(item);
+            //If the item exists, update the item with the new info
+            else
+                Datasource.getInstance().updateExistingItem(item);
+        } catch (SQLException e) {
+            showDialog("ERROR - Record could not be added:\n\n" + e.getMessage());
+            return false;
+        }
+        return true;
     }
 
     public static void showDialog(String message) {

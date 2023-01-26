@@ -70,8 +70,20 @@ public class Datasource {
                     COLUMN_ITEM_DMG_MAX +
             " ) VALUES (?,?,?,?,?,?,?,?) ";
 
+    private final String UPDATE_ITEM =
+            " UPDATE " + TABLE_ITEMS + " SET " +
+                    COLUMN_ITEM_NAME + " = ?, " +
+                    COLUMN_ITEM_TYPE + " = ?, " +
+                    COLUMN_ITEM_DESCRIPTION + " = ?, " +
+                    COLUMN_ITEM_CLASS_REQ + " = ?, " +
+                    COLUMN_ITEM_LEVEL_REQ + " = ?, " +
+                    COLUMN_ITEM_DMG_MIN + " = ?, " +
+                    COLUMN_ITEM_DMG_MAX + " = ? " +
+            " WHERE " + COLUMN_ITEM_ID + " = " + " ? ";
+
     private PreparedStatement psQuerySingleItem;
     private PreparedStatement psInsertNewItem;
+    private PreparedStatement psUpdateExistingItem;
 
     private Connection conn;
 
@@ -94,6 +106,7 @@ public class Datasource {
             //Set up prepared statements
             psQuerySingleItem = conn.prepareStatement(QUERY_ITEM_INFO_SINGLE);
             psInsertNewItem = conn.prepareStatement(INSERT_ITEM);
+            psUpdateExistingItem = conn.prepareStatement(UPDATE_ITEM);
 
             //DEBUG: Statement to delete all items for a fresh start
             deleteAllItems();
@@ -125,6 +138,7 @@ public class Datasource {
             if (psInsertNewItem != null)
                 psQuerySingleItem.close();
                 psInsertNewItem.close();
+                psUpdateExistingItem.close();
 
             //Close the connection to the database
             if (conn != null)
@@ -235,5 +249,45 @@ public class Datasource {
         } catch (SQLException sqlException) {
             throw new SQLException(sqlException.getMessage());
         } catch(Exception e) {}
+    }
+
+    public void updateExistingItem(Item item) throws SQLException {
+        try {
+            //Info that all items must have
+            psUpdateExistingItem.setString(1, item.getName());
+            psUpdateExistingItem.setString(2, item.getType());
+            psUpdateExistingItem.setString(3, item.getDescription());
+
+            //Other optional info based on type
+            if ((item.getClassReq() == ""))
+                psUpdateExistingItem.setNull(4, Types.NULL);
+            else
+                psUpdateExistingItem.setString(4, item.getClassReq());
+
+            if ((item.getLevelReq() == -1))
+                psUpdateExistingItem.setNull(5, Types.NULL);
+            else
+                psUpdateExistingItem.setInt(5, item.getLevelReq());
+
+            if ((item.getDmgMin() == -1))
+                psUpdateExistingItem.setNull(6, Types.NULL);
+            else
+                psUpdateExistingItem.setInt(6, item.getDmgMin());
+
+            if ((item.getDmgMax() == -1))
+                psUpdateExistingItem.setNull(7, Types.NULL);
+            else
+                psUpdateExistingItem.setInt(7, item.getDmgMax());
+
+            psUpdateExistingItem.setString(8, item.getId());
+
+            int affectedRows = psUpdateExistingItem.executeUpdate();
+
+            if (affectedRows != 1)
+                throw new SQLException("No records were updated");
+        } catch (SQLException sqlException) {
+            throw new SQLException(sqlException.getMessage());
+        } catch (Exception e) {
+        }
     }
 }
