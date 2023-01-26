@@ -135,9 +135,13 @@ public class Datasource {
     public void close() {
         try {
             //Close all prepared statements
-            if (psInsertNewItem != null)
+            if (psQuerySingleItem != null)
                 psQuerySingleItem.close();
+
+            if (psInsertNewItem != null)
                 psInsertNewItem.close();
+
+            if (psUpdateExistingItem != null)
                 psUpdateExistingItem.close();
 
             //Close the connection to the database
