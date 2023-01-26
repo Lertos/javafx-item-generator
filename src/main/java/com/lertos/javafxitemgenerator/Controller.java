@@ -216,7 +216,18 @@ public class Controller {
 
     @FXML
     protected void onDeleteButtonClick() {
-        System.out.println("Test Delete");
+        try {
+            Datasource.getInstance().deleteExistingItem(tfItemId.getText());
+        } catch (SQLException e) {
+            showDialog("ERROR - Record could not be added:\n\n" + e.getMessage());
+            return;
+        }
+        showDialog("Your item was successfully deleted");
+
+        //Clear all fields
+        onClearButtonClick();
+        //Repopulate the item table list
+        listItems();
     }
 }
 

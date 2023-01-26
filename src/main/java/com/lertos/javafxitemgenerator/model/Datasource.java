@@ -55,8 +55,9 @@ public class Datasource {
             " FROM " + TABLE_ITEMS +
             " WHERE " + COLUMN_ITEM_ID + " = ?;";
 
-    private final String DELETE_ALL_ITEMS =
-            " DELETE FROM " + TABLE_ITEMS + " WHERE 1=1;";
+    private final String DELETE_ALL_ITEMS = " DELETE FROM " + TABLE_ITEMS + " WHERE 1 = 1;";
+
+    private final String DELETE_ITEM = " DELETE FROM " + TABLE_ITEMS + " WHERE " + COLUMN_ITEM_ID + " = ?;";
 
     private final String INSERT_ITEM =
             " INSERT INTO " + TABLE_ITEMS + " ( " +
@@ -84,6 +85,7 @@ public class Datasource {
     private PreparedStatement psQuerySingleItem;
     private PreparedStatement psInsertNewItem;
     private PreparedStatement psUpdateExistingItem;
+    private PreparedStatement psDeleteExistingItem;
 
     private Connection conn;
 
@@ -107,6 +109,7 @@ public class Datasource {
             psQuerySingleItem = conn.prepareStatement(QUERY_ITEM_INFO_SINGLE);
             psInsertNewItem = conn.prepareStatement(INSERT_ITEM);
             psUpdateExistingItem = conn.prepareStatement(UPDATE_ITEM);
+            psDeleteExistingItem = conn.prepareStatement(DELETE_ITEM);
 
             //DEBUG: Statement to delete all items for a fresh start
             deleteAllItems();
@@ -143,6 +146,9 @@ public class Datasource {
 
             if (psUpdateExistingItem != null)
                 psUpdateExistingItem.close();
+
+            if (psDeleteExistingItem != null)
+                psDeleteExistingItem.close();
 
             //Close the connection to the database
             if (conn != null)
@@ -286,6 +292,21 @@ public class Datasource {
             psUpdateExistingItem.setString(8, item.getId());
 
             int affectedRows = psUpdateExistingItem.executeUpdate();
+
+            if (affectedRows != 1)
+                throw new SQLException("No records were updated");
+        } catch (SQLException sqlException) {
+            throw new SQLException(sqlException.getMessage());
+        } catch (Exception e) {
+        }
+    }
+
+    public void deleteExistingItem(String itemId) throws SQLException {
+        try {
+            //Info that all items must have
+            psDeleteExistingItem.setString(1, itemId);
+
+            int affectedRows = psDeleteExistingItem.executeUpdate();
 
             if (affectedRows != 1)
                 throw new SQLException("No records were updated");
